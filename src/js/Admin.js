@@ -92,7 +92,10 @@ class Admin extends React.Component {
               </div>
               <hr/>
               <div>
-                <Add />
+                <Add
+                  addCandidate={this.props.addCandidate}
+                  adding={this.props.adding}
+                />
               </div>
             </div>
           }

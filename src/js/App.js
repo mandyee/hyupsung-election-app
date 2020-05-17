@@ -16,6 +16,7 @@ class App extends React.Component {
       hasVoted: false,
       loading: true,
       voting: false,
+      adding: false,
     }
 
     if (typeof web3 != 'undefined') {
@@ -45,9 +46,12 @@ class App extends React.Component {
             this.electionInstance.candidates(i).then((candidate) => {
               const candidates = [...this.state.candidates]
               candidates.push({
-                id: candidate[0],
-                name: candidate[1],
-                voteCount: candidate[2]
+                candidateId: candidate[0],
+                presidentName: candidate[1],
+                presidentDept: candidate[2],
+                vpresidentName: candidate[3],
+                vpresidentDept: candidate[4],
+                voteCount: candidate[5]
               })
               this.setState({ candidates: candidates })
             })
@@ -77,6 +81,14 @@ class App extends React.Component {
     )
   }
 
+  addCandidate = (presidentName, presidentDept, vpresidentName, vpresidentDept) => {
+    this.setState({ adding: true }) // 후보자 트랜잭션 승인 중... (Loading)
+    this.electionInstance.addCandidate(presidentName, presidentDept,
+      vpresidentName, vpresidentDept, { from: this.state.account }).then((result) =>
+      this.setState({ adding: false })  // 후보자 트랜잭션 승인 완료
+    )
+  }
+
   render() {
     return (
       <div class='row'>
@@ -91,6 +103,8 @@ class App extends React.Component {
               candidates={this.state.candidates}
               hasVoted={this.state.hasVoted}
               castVote={this.castVote}
+              addCandidate={this.addCandidate}
+              adding={this.state.adding}
             />
           }
         </div>

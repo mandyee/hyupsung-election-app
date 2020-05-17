@@ -13,7 +13,14 @@ class Routes extends React.Component {
         <Router>
           <Main />
           <Route exact path='/' component={Home} />
-          <Route path='/admin' component={Admin} />
+          <Route path='/admin'
+            render={ () =>
+              <Admin
+                addCandidate={this.props.addCandidate}
+                adding={this.props.adding}
+              />
+            }
+          />
           <Route path='/voter'
             render={ () =>
               <Voter

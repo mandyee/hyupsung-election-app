@@ -1,50 +1,63 @@
 pragma solidity >=0.4.21 <0.7.0;
 
 contract Election {
-    // Model a Candidate
-    struct Candidate {
-        uint id;
-        string name;
-        uint voteCount;
-    }
 
-    // Store accounts that have voted
-    mapping(address => bool) public voters;
-    // Store Candidates
-    // Fetch Candidate
-    mapping(uint => Candidate) public candidates;
-    // Store Candidates Count
-    uint public candidatesCount;
+  struct Candidate {  // 후보자
+    uint candidateId; // 기호
 
-    // voted event
-    event votedEvent (
-        uint indexed _candidateId
-    );
+    // 정 입후보자 정보
+    string presidentName;
+    string presidentDept;
 
-    constructor () public {
-        addCandidate("Candidate 1");
-        addCandidate("Candidate 2");
-    }
+    // 부 입후보자 정보
+    string vpresidentName;
+    string vpresidentDept;
 
-    function addCandidate (string memory _name) private {
-        candidatesCount ++;
-        candidates[candidatesCount] = Candidate(candidatesCount, _name, 0);
-    }
+    // string[] pledges; // 공약
+    uint voteCount; // 득표수
+  }
 
-    function vote (uint _candidateId) public {
-        // require that they haven't voted before
-        require(!voters[msg.sender]);
+  // 유권자의 투표 여부 저장
+  mapping(address => bool) public voters;
 
-        // require a valid candidate
-        require(_candidateId > 0 && _candidateId <= candidatesCount);
+  // 후보자 저장
+  mapping(uint => Candidate) public candidates;
+  // 후보자 수 저장
+  uint public candidatesCount;
 
-        // record that voter has voted
-        voters[msg.sender] = true;
+  // 투표 이벤트
+  event votedEvent (
+    uint indexed _candidateId
+  );
 
-        // update candidate vote Count
-        candidates[_candidateId].voteCount ++;
+  constructor () public {
+    addCandidate("홍길동", "컴퓨터공학과", "한다연", "경영학과");
+    addCandidate("김철수", "경영학과", "백경문", "컴퓨터공학과");
+  }
 
-        // trigger voted event
-        emit votedEvent(_candidateId);
-    }
+  function addCandidate (string memory _presidentName, string memory _presidentDept,
+    string memory _vpresidentName, string memory _vpresidentDept) public {
+    // require(msg.sender == "admin 계정 주소");
+
+    candidatesCount ++;
+    candidates[candidatesCount] = Candidate(candidatesCount,
+      _presidentName, _presidentDept, _vpresidentName, _vpresidentDept, 0);
+  }
+
+  function vote (uint _candidateId) public {
+    // 투표를 하지 않은 유권자여야 함
+    require(!voters[msg.sender]);
+
+    // 유효한 후보자에게 투표해야 함
+    require(_candidateId > 0 && _candidateId <= candidatesCount);
+
+    // 투표 여부를 참으로 변경
+    voters[msg.sender] = true;
+
+    // 후보자는 득표함
+    candidates[_candidateId].voteCount ++;
+
+    // 투표 이벤트 발생
+    emit votedEvent(_candidateId);
+  }
 }

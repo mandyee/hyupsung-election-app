@@ -8,10 +8,13 @@ class Form extends React.Component {
         this.props.castVote(this.candidateId.value)
       }}>
         <div class='form-group'>
-          <label>Select Candidate</label>
+          <label>후보자를 선택하세요.</label>
           <select ref={(input) => this.candidateId = input} class='form-control'>
             {this.props.candidates.map((candidate) => {
-              return <option value={candidate.id}>{candidate.name}</option>
+              return <option value={candidate.candidateId}>
+                기호 {candidate.candidateId.toNumber()}번 :
+                {candidate.presidentName}, {candidate.vpresidentName}
+              </option>
             })}
           </select>
         </div>

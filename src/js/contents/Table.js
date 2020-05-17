@@ -7,16 +7,18 @@ class Table extends React.Component {
         <thead>
           <tr>
             <th>#</th>
-            <th>Name</th>
-            <th>Votes</th>
+            <th>정 입후보자</th>
+            <th>부 입후보자</th>
+            <th>득표수</th>
           </tr>
         </thead>
         <tbody >
           {this.props.candidates.map((candidate) => {
             return(
               <tr>
-                <th>{candidate.id.toNumber()}</th>
-                <td>{candidate.name}</td>
+                <th>{candidate.candidateId.toNumber()}</th>
+                <td>{candidate.presidentName}</td>
+                <td>{candidate.vpresidentName}</td>
                 <td>{candidate.voteCount.toNumber()}</td>
               </tr>
             )
