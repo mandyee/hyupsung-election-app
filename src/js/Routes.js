@@ -21,8 +21,6 @@ class Routes extends React.Component {
                 candidates={this.props.candidates}
                 hasVoted={this.props.hasVoted}
                 castVote={this.props.castVote}
-                authVoter={this.props.authVoter}
-                isVoter={this.props.isVoter}
               />
             }
           />

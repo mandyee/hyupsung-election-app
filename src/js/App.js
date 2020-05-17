@@ -16,7 +16,6 @@ class App extends React.Component {
       hasVoted: false,
       loading: true,
       voting: false,
-      isVoter: false,
     }
 
     if (typeof web3 != 'undefined') {
@@ -78,10 +77,6 @@ class App extends React.Component {
     )
   }
 
-  authVoter() {  // Voter 페이지에서 유권지 인증이 되면 isVoter가 true가 됨
-    this.setState({ isVoter: true })
-  }
-
   render() {
     return (
       <div class='row'>
@@ -96,8 +91,6 @@ class App extends React.Component {
               candidates={this.state.candidates}
               hasVoted={this.state.hasVoted}
               castVote={this.castVote}
-              authVoter={this.authVoter}
-              isVoter={this.state.isVoter}
             />
           }
         </div>
