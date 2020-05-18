@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Result extends React.Component {
+class ShowResult extends React.Component {
   render() {
     return (
       <table class='table'>
@@ -29,4 +29,4 @@ class Result extends React.Component {
   }
 }
 
-export default Result
+export default ShowResult

@@ -1,8 +1,10 @@
 import React from 'react'
 
 import App from './App'
-import Result from './contents/Result'
 import VoteForm from './contents/VoteForm'
+import ShowCandidates from './contents/ShowCandidates'
+
+import Main from './Main2'
 
 class Voter extends React.Component {
   constructor(props) {
@@ -23,7 +25,7 @@ class Voter extends React.Component {
           // 유권자 인증을 하지 않았을 때
           <div>
             <h2> 유권자 홈페이지입니다. </h2>
-
+            <Main />
             <form onSubmit={(event) => {
               event.preventDefault()
               this.authVoter()  // 유권자 인증이 되면 isVoter의 값을 true로 변경
@@ -36,7 +38,7 @@ class Voter extends React.Component {
           :
           // 유권자 인증 완료했을 때
           <div>
-            <Result candidates={this.props.candidates} />
+            <ShowCandidates candidates={this.props.candidates} />
             <hr/>
             { !this.props.hasVoted ?
               // 투표를 하지 않은 유권자일 때
