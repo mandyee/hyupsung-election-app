@@ -1,8 +1,8 @@
 import React from 'react'
 
 import App from './App'
-import Table from './contents/Table'
-import Form from './contents/Form'
+import Result from './contents/Result'
+import VoteForm from './contents/VoteForm'
 
 class Voter extends React.Component {
   constructor(props) {
@@ -36,11 +36,11 @@ class Voter extends React.Component {
           :
           // 유권자 인증 완료했을 때
           <div>
-            <Table candidates={this.props.candidates} />
+            <Result candidates={this.props.candidates} />
             <hr/>
             { !this.props.hasVoted ?
               // 투표를 하지 않은 유권자일 때
-              <Form
+              <VoteForm
                 candidates={this.props.candidates}
                 castVote={this.props.castVote}
               />

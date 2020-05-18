@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import AdminList from '../json/AdminList'
-import Add from './contents/Add'
+import AddCandidate from './contents/AddCandidate'
 
 class Admin extends React.Component {
   constructor(props) {
@@ -92,7 +92,7 @@ class Admin extends React.Component {
               </div>
               <hr/>
               <div>
-                <Add
+                <AddCandidate
                   addCandidate={this.props.addCandidate}
                   adding={this.props.adding}
                 />

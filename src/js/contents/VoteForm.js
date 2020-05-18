@@ -1,6 +1,6 @@
 import React from 'react'
 
-class Form extends React.Component {
+class VoteForm extends React.Component {
   render() {
     return (
       <form onSubmit={(event) => {
@@ -25,4 +25,4 @@ class Form extends React.Component {
   }
 }
 
-export default Form
+export default VoteForm
