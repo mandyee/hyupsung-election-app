@@ -13,7 +13,7 @@ contract Election {
     string vpresidentName;
     string vpresidentDept;
 
-    // string[] pledges; // 공약
+    string pledges; // 공약
     uint voteCount; // 득표수
   }
 
@@ -31,17 +31,19 @@ contract Election {
   );
 
   constructor () public {
-    addCandidate("홍길동", "컴퓨터공학과", "한다연", "경영학과");
-    addCandidate("김철수", "경영학과", "백경문", "컴퓨터공학과");
+    addCandidate("홍길동", "컴퓨터공학과", "한다연", "경영학과", "1. 공약1입니다.\n2. 공약2입니다.");
+    addCandidate("김철수", "경영학과", "백경문", "컴퓨터공학과", "1. 적극적 소통\n2. 강의실 환경 개선");
   }
 
   function addCandidate (string memory _presidentName, string memory _presidentDept,
-    string memory _vpresidentName, string memory _vpresidentDept) public {
+    string memory _vpresidentName, string memory _vpresidentDept,
+    string memory _pledges) public {
     // require(msg.sender == "admin 계정 주소");
 
     candidatesCount ++;
     candidates[candidatesCount] = Candidate(candidatesCount,
-      _presidentName, _presidentDept, _vpresidentName, _vpresidentDept, 0);
+      _presidentName, _presidentDept, _vpresidentName, _vpresidentDept,
+      _pledges, 0);
   }
 
   function vote (uint _candidateId) public {

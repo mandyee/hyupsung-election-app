@@ -8,6 +8,7 @@ class AddCandidate extends React.Component {
       presidentDept: '',
       vpresidentName: '',
       vpresidentDept: '',
+      pledges: '',
     }
   }
 
@@ -21,13 +22,14 @@ class AddCandidate extends React.Component {
     e.preventDefault()
 
     this.props.addCandidate(this.state.presidentName, this.state.presidentDept,
-      this.state.vpresidentName, this.state.vpresidentDept)
+      this.state.vpresidentName, this.state.vpresidentDept, this.state.pledges)
 
     this.setState({ // 상태 초기화
       presidentName: '',
       presidentDept: '',
       vpresidentName: '',
       vpresidentDept: '',
+      pledges: '',
     })
   }
 
@@ -74,6 +76,14 @@ class AddCandidate extends React.Component {
                     name="vpresidentDept"
                   />
                 </div>
+              </div>
+              <div>
+                <div> 공약 </div>
+                <textarea
+                  value={this.state.pledges}
+                  onChange={this.handleField}
+                  name="pledges">
+                </textarea>
               </div>
             </div>
             <button type='submit' class='btn btn-primary'>Add</button>

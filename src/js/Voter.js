@@ -4,32 +4,46 @@ import App from './App'
 import VoteForm from './contents/VoteForm'
 import ShowCandidates from './contents/ShowCandidates'
 
-import Main from './Main2'
+import NavVoter from './NavVoter'
 
 class Voter extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      isVoter: false,
+      authcode: '',
+      isVoter: null,
     }
   }
 
-  authVoter() {  // 유권자 인증이 되었을 때 실행
+  handleAuthcode = e => { // 인증 코드 입력 필드 관리
+    this.setState({
+      authcode: e.target.value
+    })
+  }
+
+  handleSubmit = e => { // 투표소 입장 버튼 클릭 이벤트
+    e.preventDefault()
+
+    window.localStorage.setItem('isVoter', true)
     this.setState({ isVoter: true })
+  }
+
+  exit = e => { // 투표소 퇴장 버튼 클릭 이벤트
+    e.preventDefault()
+
+    window.localStorage.removeItem('isVoter')
+    this.setState({ authcode: '', isVoter: null })
   }
 
   render() {
     return (
       <div className='Voter'>
-        { !this.state.isVoter ?
+        { !window.localStorage.getItem('isVoter') ?
           // 유권자 인증을 하지 않았을 때
           <div>
             <h2> 유권자 홈페이지입니다. </h2>
-            <Main />
-            <form onSubmit={(event) => {
-              event.preventDefault()
-              this.authVoter()  // 유권자 인증이 되면 isVoter의 값을 true로 변경
-            }}>
+            <NavVoter />
+            <form onSubmit={this.handleSubmit}>
               <input type="text" name="name" />
               <button type='submit' class='btn btn-primary'> 투표소 입장하기 </button>
             </form>
@@ -50,6 +64,10 @@ class Voter extends React.Component {
               // 이미 투표한 유권자일 때
               <div> 이미 투표한 계정입니다. <hr/> </div>
             }
+            <div>
+              <button class='btn btn-primary' onClick={this.exit}> 투표소 퇴장하기 </button>
+            </div>
+            <hr/>
           </div>
         }
       </div>

@@ -46,7 +46,7 @@ class Admin extends React.Component {
   logout = e => { // 로그아웃 버튼 클릭 이벤트
     e.preventDefault()
 
-    window.localStorage.clear()
+    window.localStorage.removeItem('isLogin')
     this.setState({ username: '', password: '', isLogin: null })
   }
 

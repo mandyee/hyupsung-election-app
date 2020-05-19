@@ -51,7 +51,8 @@ class App extends React.Component {
                 presidentDept: candidate[2],
                 vpresidentName: candidate[3],
                 vpresidentDept: candidate[4],
-                voteCount: candidate[5]
+                pledges: candidate[5],
+                voteCount: candidate[6]
               })
               this.setState({ candidates: candidates })
             })
@@ -81,10 +82,12 @@ class App extends React.Component {
     )
   }
 
-  addCandidate = (presidentName, presidentDept, vpresidentName, vpresidentDept) => {
+  addCandidate = (presidentName, presidentDept, vpresidentName, vpresidentDept,
+  pledges) => {
     this.setState({ adding: true }) // 후보자 트랜잭션 승인 중... (Loading)
     this.electionInstance.addCandidate(presidentName, presidentDept,
-      vpresidentName, vpresidentDept, { from: this.state.account }).then((result) =>
+      vpresidentName, vpresidentDept, pledges,
+      { from: this.state.account }).then((result) =>
       this.setState({ adding: false })  // 후보자 트랜잭션 승인 완료
     )
   }
