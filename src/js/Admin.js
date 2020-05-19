@@ -1,4 +1,5 @@
 import React from 'react'
+import Modal from 'react-awesome-modal'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import AdminList from '../json/AdminList'
@@ -11,6 +12,7 @@ class Admin extends React.Component {
       username: '',
       password: '',
       isLogin: null,
+      addCandidateOn: false,
     }
   }
 
@@ -50,56 +52,109 @@ class Admin extends React.Component {
     this.setState({ username: '', password: '', isLogin: null })
   }
 
+  openAddCandidate = e => { // 후보자 추가 버튼 클릭 이벤트
+    e.preventDefault()
+
+    this.setState({
+      addCandidateOn: true,
+    })
+  }
+
+  closeAddCandidate = e => { // 후보자 추가 창 닫기 클릭 이벤트
+    e.preventDefault()
+
+    this.setState({
+      addCandidateOn: false,
+    })
+  }
+
   render() {
     return (
       <Router>
-        <div>
-          { !window.localStorage.getItem('isLogin') ?
-            // 로그인 되지 않았을 때
-            <div>
-              <h2> 선거관리위원회 홈페이지입니다. </h2>
-
-              <form onSubmit={this.handleSubmit}>
-                <div>
-                  <span>Username</span>
-                  <input
-                    placeholder='사용자 이름을 입력하세요'
-                    value={this.state.username}
-                    onChange={this.handleUsername}
-                  />
-                </div>
-                <div>
-                  <span>Password</span>
-                  <input
-                    placeholder='비밀번호를 입력하세요'
-                    value={this.state.password}
-                    onChange={this.handlePassword}
-                    type='password'
-                  />
-                </div>
-                <div>
-                  <button type='submit'> Login </button>
-                </div>
-              </form>
+        { !window.localStorage.getItem('isLogin') ?
+          // 로그인 되지 않았을 때
+          <div>
+            <div class="overlay">
+              <img src="img/vote-by-mail-concern.png" width="100%" height="100%"></img>
             </div>
-            :
-            // 선관위 로그인 완료했을 때
-            <div>
+            <div class='masthead'>
+              <div class='masthead-bg'></div>
+              <div class="container h-100">
+                <div class="row h-100">
+                  <div class="col-12 my-auto">
+                    <div class="masthead-content text-white py-5 py-md-0">
+                      <h1 class="mb-3">Welcome!</h1>
+                      <p class="mb-5">협성대학교 선거관리위원회 페이지입니다.</p>
+                      <div class="input-group input-group-newsletter">
+                        <form onSubmit={this.handleSubmit}>
+                          <div>
+                            <span>Username</span>
+                            <input
+                              class="form-control"
+                              placeholder='Username 입력...'
+                              value={this.state.username}
+                              onChange={this.handleUsername}
+                            />
+                          </div>
+                          <div>
+                            <span>Password</span>
+                            <input
+                              class="form-control"
+                              placeholder='Password 입력...'
+                              value={this.state.password}
+                              onChange={this.handlePassword}
+                              type='password'
+                            />
+                          </div> <br/>
+                          <div>
+                            <button class="btn btn-secondary" type='submit'>
+                              Login
+                            </button>
+                          </div>
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          :
+          // 선관위 로그인 완료했을 때
+          <div class="container" style={{width:"900px"}}>
+            <div class="col-lg-12">
               <h2> 선거관리위원회님, 환영합니다! </h2>
-
               <div>
                 <button onClick={this.logout}> Logout </button>
               </div>
               <hr/>
               <div>
-                <AddCandidate
-                  addCandidate={this.props.addCandidate}
-                  adding={this.props.adding}
-                />
+                <button class="btn btn-dark btn-detail" type="button">
+                  선거 관리
+                </button>
+                <hr/>
+                <button class="btn btn-dark btn-detail" type="button"
+                onClick={this.openAddCandidate}>
+                  후보자 추가
+                </button>
+
+                {/* 후보자 추가 모달*/}
+                <Modal visible={this.state.addCandidateOn}
+                width="400" height="500" effect="fadeInDown"
+                onClickAway={this.closeAddCandidate}>
+                  <div class="container text-center">
+                    <AddCandidate
+                      addCandidate={this.props.addCandidate}
+                      adding={this.props.adding}
+                    />
+                    <input value="닫기" class="btn btn-dark btn-detail"
+                    type='button' onClick={this.closeAddCandidate}/>
+                  </div>
+                </Modal>
               </div>
             </div>
-          }
-        </div>
+          </div>
+        }
       </Router>
     )
   }

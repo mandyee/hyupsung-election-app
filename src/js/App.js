@@ -94,9 +94,8 @@ class App extends React.Component {
 
   render() {
     return (
-      <div class='row'>
-        <div class='col-lg-12 text-center' >
-          <h1>Hyupsung Election App</h1>
+      <div>
+        <div>
           <br/>
           { this.state.loading || this.state.voting ?
             <p class='text-center'>Loading...</p>

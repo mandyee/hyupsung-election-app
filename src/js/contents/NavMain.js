@@ -6,7 +6,7 @@ function NavMain() {
     <div>
       <ul>
         <li>
-          <Link to='/admin'>선관위 페이지</Link>
+          <Link to='/admin'>선거관리위원회 페이지</Link>
         </li>
         <li>
           <Link to='/voter'>유권자 페이지</Link>

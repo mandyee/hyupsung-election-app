@@ -63,7 +63,7 @@ class ShowCandidates extends React.Component {
                 <Modal visible={this.state.pledgesOn}
                 width="400" height="300" effect="fadeInDown"
                 onClickAway={this.closePledges}>
-                  <div>
+                  <div class="container text-center">
                     {/* new line을 화면에 정상적으로 출력하기 위함 */}
                     {this.state.pledges.split("\n").map(function(item, idx) {
                       return (

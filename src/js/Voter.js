@@ -4,7 +4,7 @@ import App from './App'
 import VoteForm from './contents/VoteForm'
 import ShowCandidates from './contents/ShowCandidates'
 
-import NavVoter from './NavVoter'
+import NavVoter from './contents/NavVoter'
 
 class Voter extends React.Component {
   constructor(props) {
@@ -37,10 +37,10 @@ class Voter extends React.Component {
 
   render() {
     return (
-      <div className='Voter'>
+      <div>
         { !window.localStorage.getItem('isVoter') ?
           // 유권자 인증을 하지 않았을 때
-          <div>
+          <div class="container" style={{width:"900px"}}>
             <h2> 유권자 홈페이지입니다. </h2>
             <NavVoter />
             <form onSubmit={this.handleSubmit}>
@@ -51,7 +51,7 @@ class Voter extends React.Component {
           </div>
           :
           // 유권자 인증 완료했을 때
-          <div>
+          <div class="container" style={{width:"900px"}}>
             <ShowCandidates candidates={this.props.candidates} />
             <hr/>
             { !this.props.hasVoted ?
