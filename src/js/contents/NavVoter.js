@@ -3,15 +3,14 @@ import { Link } from 'react-router-dom'
 
 function NavVoter() {
   return (
-    <div>
-      <ul>
-        <li>
-          <Link to='/turnout'>투표율 보기</Link>
-        </li>
-        <li>
-          <Link to='/result'>투표 결과 보기</Link>
-        </li>
-      </ul>
+    <div class="input-group input-group-newsletter">
+      <Link to='/turnout'>
+        <button class='btn btn-custom'> 투표율 보기 </button>
+      </Link>
+      &nbsp;
+      <Link to='/result'>
+        <button class='btn btn-custom'> 투표 결과 보기 </button>
+      </Link>
     </div>
   );
 }

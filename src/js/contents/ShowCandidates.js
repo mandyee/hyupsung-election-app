@@ -6,6 +6,7 @@ class ShowCandidates extends React.Component {
     super(props)
     this.state = {
       pledgesOn: false,
+      candidateId: '',
       pledges: '',
     }
   }
@@ -15,6 +16,7 @@ class ShowCandidates extends React.Component {
 
     this.setState({
       pledgesOn: true,
+      candidateId: e.target.getAttribute('candidateId'),
       pledges: e.target.getAttribute('pledges')
     })
   }
@@ -24,6 +26,7 @@ class ShowCandidates extends React.Component {
 
     this.setState({
       pledgesOn: false,
+      candidateId: '',
       pledges: ''
     })
   }
@@ -31,7 +34,6 @@ class ShowCandidates extends React.Component {
   render() {
     return (
       <div>
-        <h3> 후보자 목록 </h3> <br/>
         <div id="candidatesRow" class="row">
           {this.props.candidates.map((candidate) => {
             return(
@@ -52,7 +54,8 @@ class ShowCandidates extends React.Component {
                       <strong> 학과 </strong>: {candidate.vpresidentDept} <br/>
                       <hr/>
                       <button class="btn btn-dark btn-detail" type="button"
-                      onClick={this.openPledges} pledges={candidate.pledges}>
+                      onClick={this.openPledges} candidateId={candidate.candidateId.toNumber()}
+                      pledges={candidate.pledges}>
                         공약 보기
                       </button>
                     </div>
@@ -63,7 +66,9 @@ class ShowCandidates extends React.Component {
                 <Modal visible={this.state.pledgesOn}
                 width="400" height="300" effect="fadeInDown"
                 onClickAway={this.closePledges}>
-                  <div class="container text-center">
+                  <div class="container" style={{padding:"20px"}}>
+                    <h3 class="text-center"> 기호 {this.state.candidateId}번 </h3>
+                    <hr/>
                     {/* new line을 화면에 정상적으로 출력하기 위함 */}
                     {this.state.pledges.split("\n").map(function(item, idx) {
                       return (
@@ -73,8 +78,10 @@ class ShowCandidates extends React.Component {
                       )
                     })}
                     <hr/>
-                    <input value="닫기" class="btn btn-dark btn-detail"
-                    type='button' onClick={this.closePledges}/>
+                    <div class='text-center'>
+                      <input value="닫기" class="btn btn-dark btn-detail"
+                      type='button' onClick={this.closePledges}/>
+                    </div>
                   </div>
                 </Modal>
               </div>

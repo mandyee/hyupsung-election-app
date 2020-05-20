@@ -77,18 +77,20 @@ class Admin extends React.Component {
             <div class="overlay">
               <img src="img/vote-by-mail-concern.png" width="100%" height="100%"></img>
             </div>
-            <div class='masthead'>
+            <div class="overlay">
+            </div>
+            <div class="masthead">
               <div class='masthead-bg'></div>
               <div class="container h-100">
                 <div class="row h-100">
                   <div class="col-12 my-auto">
                     <div class="masthead-content text-white py-5 py-md-0">
                       <h1 class="mb-3">Welcome!</h1>
-                      <p class="mb-5">협성대학교 선거관리위원회 페이지입니다.</p>
-                      <div class="input-group input-group-newsletter">
-                        <form onSubmit={this.handleSubmit}>
-                          <div>
-                            <span>Username</span>
+                      <p class="mb-5">협성대학교 선거관리위원회 홈페이지입니다.</p>
+                      <form onSubmit={this.handleSubmit}>
+                        <div>
+                          <span>Username</span>
+                          <div class="input-group input-group-newsletter">
                             <input
                               class="form-control"
                               placeholder='Username 입력...'
@@ -96,8 +98,10 @@ class Admin extends React.Component {
                               onChange={this.handleUsername}
                             />
                           </div>
-                          <div>
-                            <span>Password</span>
+                        </div>
+                        <div>
+                          <span>Password</span>
+                          <div class="input-group input-group-newsletter">
                             <input
                               class="form-control"
                               placeholder='Password 입력...'
@@ -105,14 +109,14 @@ class Admin extends React.Component {
                               onChange={this.handlePassword}
                               type='password'
                             />
-                          </div> <br/>
-                          <div>
-                            <button class="btn btn-secondary" type='submit'>
-                              Login
-                            </button>
                           </div>
-                        </form>
-                      </div>
+                        </div> <br/>
+                        <div class="input-group input-group-newsletter">
+                          <button class="btn btn-secondary" type='submit'>
+                            Login
+                          </button>
+                        </div>
+                      </form>
                     </div>
                   </div>
                 </div>
@@ -121,28 +125,55 @@ class Admin extends React.Component {
           </div>
           :
           // 선관위 로그인 완료했을 때
-          <div class="container" style={{width:"900px"}}>
-            <div class="col-lg-12">
-              <h2> 선거관리위원회님, 환영합니다! </h2>
-              <div>
-                <button onClick={this.logout}> Logout </button>
+          <div>
+            <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+              <div class="container">
+                <a class="navbar-brand" style={{color:"white"}}>Hyupsung Election App</a>
               </div>
-              <hr/>
-              <div>
-                <button class="btn btn-dark btn-detail" type="button">
-                  선거 관리
-                </button>
-                <hr/>
-                <button class="btn btn-dark btn-detail" type="button"
-                onClick={this.openAddCandidate}>
-                  후보자 추가
-                </button>
+            </nav>
+
+            <div class="container">
+              <div class="row">
+
+                <div class="col-md-8">
+                  <h1 class="my-4"> 선거 목록 <small>Election List</small> </h1>
+                  ***** 선거 List *****
+                </div>
+
+                <div class="col-md-4">
+
+                  <div class="card my-4">
+                    <h5 class="card-header">Admin Info</h5>
+                    <div class="card-body">
+                      <strong>선관위</strong>님, 안녕하세요! <br/> <hr/>
+                      <span class="input-group-btn">
+                        <button class='btn btn-secondary' onClick={this.logout}>
+                          Logout
+                        </button>
+                      </span>
+                    </div>
+                  </div>
+
+                  <div class="card my-4">
+                    <button class="btn btn-dark btn-detail" type="button">
+                      선거 관리
+                    </button>
+                  </div>
+
+                  <div class="card my-4">
+                    <button class="btn btn-dark btn-detail" type="button"
+                    onClick={this.openAddCandidate}>
+                      후보자 추가
+                    </button>
+                  </div>
+
+                </div>
 
                 {/* 후보자 추가 모달*/}
                 <Modal visible={this.state.addCandidateOn}
-                width="400" height="500" effect="fadeInDown"
+                width="400" height="600" effect="fadeInDown"
                 onClickAway={this.closeAddCandidate}>
-                  <div class="container text-center">
+                  <div class="container text-center" style={{padding:"20px"}}>
                     <AddCandidate
                       addCandidate={this.props.addCandidate}
                       adding={this.props.adding}

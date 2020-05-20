@@ -1,9 +1,9 @@
 import React from 'react'
 
 import App from './App'
-import ShowResult from './contents/ShowResult'
+import ShowTurnout from './contents/ShowTurnout'
 
-class Result extends React.Component {
+class Turnout extends React.Component {
   render() {
     return (
       <div>
@@ -16,9 +16,9 @@ class Result extends React.Component {
         <div class="container">
           <div class="row">
             <div class="col-lg-12">
-              <h1 class="my-4"> 투표 결과 <small>Results</small> </h1>
+              <h1 class="my-4"> 투표율 <small>Voter turnout</small> </h1>
               <br/>
-              <ShowResult candidates={this.props.candidates} />
+              <ShowTurnout />
             </div>
           </div>
         </div>
@@ -27,4 +27,4 @@ class Result extends React.Component {
   }
 }
 
-export default Result
+export default Turnout

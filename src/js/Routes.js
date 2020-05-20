@@ -4,6 +4,7 @@ import { HashRouter as Router, Route } from 'react-router-dom'
 import Home from './Home'
 import Admin from './Admin'
 import Voter from './Voter'
+import Turnout from './Turnout'
 import Result from './Result'
 
 class Routes extends React.Component {
@@ -30,7 +31,9 @@ class Routes extends React.Component {
               />
             }
           />
-          {/*<Route exact path='/turnout' component={Turnout} />*/}
+          <Route exact path='/turnout'
+            component={Turnout}
+          />
           <Route exact path='/result'
             render={ () =>
               <Result

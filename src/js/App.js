@@ -96,7 +96,6 @@ class App extends React.Component {
     return (
       <div>
         <div>
-          <br/>
           { this.state.loading || this.state.voting ?
             <p class='text-center'>Loading...</p>
             :
