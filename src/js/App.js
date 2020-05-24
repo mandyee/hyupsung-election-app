@@ -7,6 +7,8 @@ import Routes from './Routes'
 
 import 'bootstrap/dist/css/bootstrap.css'
 
+import _ from 'lodash';
+
 class App extends React.Component {
   constructor(props) {
     super(props)
@@ -17,6 +19,11 @@ class App extends React.Component {
       loading: true,
       voting: false,
       adding: false,
+
+      block_ids: [],
+      block_hashes: [],
+      block_ts: [], // block의 timestamp
+      curr_block: 100,  // block 정보 최대 100개 보여줄 것
     }
 
     if (typeof web3 != 'undefined') {
@@ -32,9 +39,59 @@ class App extends React.Component {
 
     this.castVote = this.castVote.bind(this)
     this.watchEvents = this.watchEvents.bind(this)
+
+    this.web3.eth.getBlockNumber((err, rtn) => {
+      if(err) return console.log(err);
+      this.state.curr_block = rtn;
+    })
+  }
+
+  getBlocks(curr_block_no) {
+    const block_ids = this.state.block_ids.slice();
+    const block_hashes = this.state.block_hashes.slice();
+    const block_ts = this.state.block_ts.slice();
+    var max_blocks = curr_block_no;
+
+    // unix timestamp 형식을 yyyy-mm-dd 형식으로 바꾸기 위한 변수들
+    var date, formattedTime;
+    var year, month, day, hours, minutes, seconds;
+
+    for (var i = max_blocks; i >= 0; i--) {
+      this.web3.eth.getBlock(i, false, function(err, block) {
+        date = new Date(block.timestamp * 1000)
+
+        year = date.getFullYear()
+        month = date.getMonth() + 1
+        day = date.getDate()
+        hours = date.getHours()
+        minutes = date.getMinutes()
+        seconds = date.getSeconds()
+
+        // 날짜 형식에서 한 자리수일 경우 앞에 0을 채워줌
+        if(month < 10) month = "0" + month
+        if(day < 10) day = "0" + day
+        if(hours < 10) hours = "0" + hours
+        if(minutes < 10) minutes = "0" + minutes
+        if(seconds < 10) seconds = "0" + seconds
+
+        formattedTime = year + '.' + month + '.' + day
+          + ' ' + hours + ':' + minutes + ':' + seconds
+
+        block_ids.push(block.number)
+        block_hashes.push(block.hash)
+        block_ts.push(formattedTime)
+      })
+    }
+    this.setState({
+      block_ids: block_ids,
+      block_hashes: block_hashes,
+      block_ts: block_ts
+    })
   }
 
   componentDidMount() {
+    this.getBlocks(this.state.curr_block);
+
     // TODO: Refactor with promise chain
     this.web3.eth.getCoinbase((err, account) => {
       this.setState({ account })
@@ -106,6 +163,10 @@ class App extends React.Component {
               castVote={this.castVote}
               addCandidate={this.addCandidate}
               adding={this.state.adding}
+              block_ids={this.state.block_ids}
+              block_hashes={this.state.block_hashes}
+              block_ts={this.state.block_ts}
+              curr_block={this.state.curr_block}
             />
           }
         </div>

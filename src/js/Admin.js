@@ -70,7 +70,7 @@ class Admin extends React.Component {
 
   render() {
     return (
-      <Router>
+      <div>
         { !window.localStorage.getItem('isLogin') ?
           // 로그인 되지 않았을 때
           <div>
@@ -167,6 +167,12 @@ class Admin extends React.Component {
                     </button>
                   </div>
 
+                  <div class="card my-4">
+                    <Link to='/blockinfo' class="btn btn-dark btn-detail">
+                       Block Info
+                    </Link>
+                  </div>
+
                 </div>
 
                 {/* 후보자 추가 모달*/}
@@ -186,7 +192,7 @@ class Admin extends React.Component {
             </div>
           </div>
         }
-      </Router>
+      </div>
     )
   }
 }

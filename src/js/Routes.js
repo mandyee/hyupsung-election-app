@@ -6,6 +6,8 @@ import Admin from './Admin'
 import Voter from './Voter'
 import Turnout from './Turnout'
 import Result from './Result'
+import BlockInfo from './BlockInfo'
+
 
 class Routes extends React.Component {
   render() {
@@ -18,6 +20,10 @@ class Routes extends React.Component {
               <Admin
                 addCandidate={this.props.addCandidate}
                 adding={this.props.adding}
+                block_ids={this.props.block_ids}
+                block_hashes={this.props.block_hashes}
+                block_ts={this.props.block_ts}
+                curr_block={this.props.curr_block}
               />
             }
           />
@@ -38,6 +44,16 @@ class Routes extends React.Component {
             render={ () =>
               <Result
                 candidates={this.props.candidates}
+              />
+            }
+          />
+          <Route exact path='/blockinfo'
+            render={ () =>
+              <BlockInfo
+                block_ids={this.props.block_ids}
+                block_hashes={this.props.block_hashes}
+                block_ts={this.props.block_ts}
+                curr_block={this.props.curr_block}
               />
             }
           />
