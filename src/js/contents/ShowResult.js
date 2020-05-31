@@ -16,10 +16,10 @@ class ShowResult extends React.Component {
           {this.props.candidates.map((candidate) => {
             return(
               <tr>
-                <th>{candidate.candidateId.toNumber()}</th>
+                <th>{candidate.candidateId}</th>
                 <td>{candidate.presidentName}</td>
                 <td>{candidate.vpresidentName}</td>
-                <td>{candidate.voteCount.toNumber()}</td>
+                <td>{candidate.voteCount}</td>
               </tr>
             )
           })}

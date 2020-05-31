@@ -31,6 +31,12 @@ class Routes extends React.Component {
             render={ () =>
               <Voter
                 account={this.props.account}
+
+                startedElections={this.props.startedElections}
+                selectElection={this.props.selectElection}
+                selectedElection={this.props.selectedElection}
+                selectedCandidates={this.props.selectedCandidates}
+
                 candidates={this.props.candidates}
                 hasVoted={this.props.hasVoted}
                 castVote={this.props.castVote}

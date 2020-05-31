@@ -2,17 +2,25 @@ import React from 'react'
 
 import App from './App'
 import VoteForm from './contents/VoteForm'
-import ShowCandidates from './contents/ShowCandidates'
+import ShowElections from './contents/ShowElections'
 
+import VoterList from '../json/VoterList'
 import NavVoter from './contents/NavVoter'
 
 class Voter extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
+      studentId: '',
       authcode: '',
       isVoter: null,
     }
+  }
+
+  handleStudentId = e => { // 학번 입력 필드 관리
+    this.setState({
+      studentId: e.target.value
+    })
   }
 
   handleAuthcode = e => { // 인증 코드 입력 필드 관리
@@ -24,15 +32,27 @@ class Voter extends React.Component {
   handleSubmit = e => { // 투표소 입장 버튼 클릭 이벤트
     e.preventDefault()
 
-    window.localStorage.setItem('isVoter', true)
-    this.setState({ isVoter: true })
+    const user = VoterList.find(  // 학번 및 인증코드가 유효한 값인지 검사
+      (user) => user.studentId === this.state.studentId
+      && user.authcode === this.state.authcode
+    )
+
+    if (user === undefined) { // 유효하지 않은 user일 때
+      alert('학번 혹은 password가 올바르지 않습니다.')
+    }
+    else {  // 유효한 user일 때
+      window.localStorage.setItem('isVoter', true)
+      window.localStorage.setItem('studentId', this.state.studentId)
+      this.setState({ isVoter: true })
+    }
   }
 
   exit = e => { // 투표소 퇴장 버튼 클릭 이벤트
     e.preventDefault()
 
     window.localStorage.removeItem('isVoter')
-    this.setState({ authcode: '', isVoter: null })
+    window.localStorage.removeItem('studentId')
+    this.setState({ studentId: '', authcode: '', isVoter: null })
   }
 
   render() {
@@ -56,14 +76,30 @@ class Voter extends React.Component {
                       <p class="mb-5">협성대학교 학생회 선거 시스템입니다. 인증코드를 입력한 후, 원하는 후보자에게
                       <strong> 투표</strong>하세요!</p>
                       <form onSubmit={this.handleSubmit}>
-                        <div class="input-group input-group-newsletter">
-                          <input class="form-control" placeholder='인증코드 입력...'
-                          type="text" name="authcode" />
-                          <div class="input-group-append">
-                            <button class="btn btn-secondary" type='submit'>
-                              투표소 입장하기
-                            </button>
+                        <div>
+                          <span>Student ID</span>
+                          <div class="input-group input-group-newsletter">
+                            <input class="form-control"
+                            placeholder='학번 입력...'
+                            value={this.state.studentId}
+                            onChange={this.handleStudentId}
+                            type="text" name="studentId" />
                           </div>
+                        </div>
+                        <div>
+                          <span>Password</span>
+                          <div class="input-group input-group-newsletter">
+                            <input class="form-control"
+                            placeholder='Password 입력...'
+                            value={this.state.authcode}
+                            onChange={this.handleAuthcode}
+                            type="password" name="authcode" />
+                          </div>
+                        </div> <br/>
+                        <div class="input-group input-group-newsletter">
+                          <button class="btn btn-secondary" type='submit'>
+                            투표소 입장하기
+                          </button>
                         </div>
                       </form>
                       <hr/> <NavVoter />
@@ -86,18 +122,15 @@ class Voter extends React.Component {
               <div class="row">
 
                 <div class="col-md-8">
-                  <h1 class="my-4"> 후보자 목록 <small>Candidate List</small> </h1>
-                  <ShowCandidates candidates={this.props.candidates} /> <hr/>
-                  { !this.props.hasVoted ?
-                    // 투표를 하지 않은 유권자일 때
-                    <VoteForm
-                      candidates={this.props.candidates}
-                      castVote={this.props.castVote}
-                    />
-                    :
-                    // 이미 투표한 유권자일 때
-                    <div> 이미 투표한 계정입니다. <hr/> </div>
-                  }
+                  <ShowElections
+                    startedElections={this.props.startedElections}
+                    selectElection={this.props.selectElection}
+                    selectedElection={this.props.selectedElection}
+                    selectedCandidates={this.props.selectedCandidates}
+
+                    candidates={this.props.candidates}
+                    castVote={this.props.castVote}
+                  />
                 </div>
 
                 <div class="col-md-4">
@@ -106,7 +139,7 @@ class Voter extends React.Component {
                     <h5 class="card-header">Voter Info</h5>
                     <div class="card-body">
                       <strong>유권자</strong>님, 안녕하세요! <br/> <hr/>
-                      학번 : OOOOOO <br/>
+                      학번 : {window.localStorage.getItem('studentId')} <br/>
                       학과 : OOOOOO <br/> <hr/>
                       <span class="input-group-btn">
                         <button class='btn btn-secondary' onClick={this.exit}>

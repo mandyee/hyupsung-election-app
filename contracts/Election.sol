@@ -5,6 +5,7 @@ contract Election {
   struct Candidate {  // 후보자
     uint candidateId;
     uint electionId;  // 소속 선거
+    uint symbolNumber;  // 기호 (소속 선거에서의 등록 순서)
     uint voteCount; // 득표수
 
     // 정 입후보자 정보
@@ -26,23 +27,35 @@ contract Election {
 
   struct Voter {
     uint studentId; // 학번
-    uint[] votedElection; // 투표 완료한 선거들 (배열로 수정하기)
+    uint[] votedElection; // 투표 완료한 선거들
   }
 
   Candidate[] public candidateList;
   ElectionUhs[] public electionList;
   Voter[] public voterList;
 
-  // 나머지 정보들도 반드시 넣기
-  function addCandidate(uint _electionId, string memory _presidentName,
-    string memory _vpresidentName) public {
+  function addCandidate(uint _electionId,
+    string memory _presidentName, string memory _presidentDept,
+    string memory _vpresidentName, string memory _vpresidentDept,
+    string memory _pledges) public {
     candidateList.length += 1;
     uint index = candidateList.length - 1;
     candidateList[index].candidateId = index;
     candidateList[index].electionId = _electionId;
     candidateList[index].voteCount = 0;
     candidateList[index].presidentName = _presidentName;
+    candidateList[index].presidentDept = _presidentDept;
     candidateList[index].vpresidentName = _vpresidentName;
+    candidateList[index].vpresidentDept = _vpresidentDept;
+    candidateList[index].pledges = _pledges;
+
+    uint symbolNumber;
+    for(uint i=0; i<candidateList.length; i++) {
+      if(candidateList[i].electionId == _electionId) {
+        symbolNumber++;
+      }
+    }
+    candidateList[index].symbolNumber = symbolNumber;
   }
 
   function getCandidateCount() public view returns(uint) {
@@ -65,6 +78,10 @@ contract Election {
     voterList.length += 1;
     uint index = voterList.length - 1;
     voterList[index].studentId = _studentId;
+  }
+
+  function getVoterCount() public view returns(uint) {
+    return voterList.length;
   }
 
   // checkVoted == false일 때만 실행
@@ -103,6 +120,7 @@ contract Election {
     electionList[_electionId].isStarted = false;
   }
 
+  /*
   // 현재 진행중인 선거인지 확인
   function getElectionState(uint _electionId) public view returns(bool) {
     return electionList[_electionId].isStarted;
@@ -110,10 +128,10 @@ contract Election {
 
   // 후보자 득표 수 리턴
   function getCount(uint _index) public view returns(uint, uint, uint) {
-    // _index의 값은 1~candidateCount이다. 모든 후보자를 검사하는 것.
     return (candidateList[_index].electionId, candidateList[_index].candidateId,
       candidateList[_index].voteCount);
   }
+  */
 
   // 투표 이벤트
   event votedEvent (
@@ -127,8 +145,8 @@ contract Election {
     addElection("총학생회 선거");
     addElection("컴퓨터공학과 학생회 선거");
 
-    addCandidate(0, "홍길동", "한다연");
-    addCandidate(0, "김철수", "백경문");
-    addCandidate(1, "김뫄뫄", "이뫄뫄");
+    addCandidate(0, "홍길동", "컴퓨터공학과", "한다연", "경영학과", "1. 공약1입니다.\n2. 공약2입니다.");
+    addCandidate(0, "김철수", "경영학과", "백경문", "컴퓨터공학과", "1. 적극적 소통\n2. 강의실 환경 개선");
+    addCandidate(1, "김뫄뫄", "학과", "이뫄뫄", "학과", "공약");
   }
 }
