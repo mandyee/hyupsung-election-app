@@ -98,26 +98,28 @@ class App extends React.Component {
       this.election.deployed().then((electionInstance) => {
         this.electionInstance = electionInstance
         this.watchEvents()
-        this.electionInstance.candidatesCount().then((candidatesCount) => {
-          for (var i = 1; i <= candidatesCount; i++) {
-            this.electionInstance.candidates(i).then((candidate) => {
+
+        this.electionInstance.getCandidateCount().then((candidateCount) => {
+          for (var i = 0; i < Number(candidateCount); i++) {
+            this.electionInstance.candidateList(i).then((candidate) => {
               const candidates = [...this.state.candidates]
               candidates.push({
-                candidateId: candidate[0],
-                presidentName: candidate[1],
-                presidentDept: candidate[2],
-                vpresidentName: candidate[3],
-                vpresidentDept: candidate[4],
-                pledges: candidate[5],
-                voteCount: candidate[6]
+                candidateId: String(candidate[0]),
+                electionId: String(candidate[1]),
+                voteCount: String(candidate[2]),
+                presidentName: String(candidate[3]),
+                //presidentDept: candidate.presidentDept,
+                vpresidentName: String(candidate[5]),
+                //vpresidentDept: candidate.vpresidentDept,
+                //pledges: String(candidate[7])
               })
               this.setState({ candidates: candidates })
             })
           }
         })
-        this.electionInstance.voters(this.state.account).then((hasVoted) => {
-          this.setState({ hasVoted, loading: false })
-        })
+        //this.electionInstance.voters(this.state.account).then((hasVoted) => {
+          this.setState({ /*hasVoted,*/ loading: false })
+        //})
       })
     })
   }
@@ -132,18 +134,16 @@ class App extends React.Component {
     })
   }
 
-  castVote(candidateId) {
+  castVote(studentId, candidateId) {
     this.setState({ voting: true })
-    this.electionInstance.vote(candidateId, { from: this.state.account }).then((result) =>
+    this.electionInstance.vote(stutentId, candidateId, { from: this.state.account }).then((result) =>
       this.setState({ hasVoted: true })
     )
   }
 
-  addCandidate = (presidentName, presidentDept, vpresidentName, vpresidentDept,
-  pledges) => {
+  addCandidate = (electionId, presidentName, vpresidentName) => {
     this.setState({ adding: true }) // 후보자 트랜잭션 승인 중... (Loading)
-    this.electionInstance.addCandidate(presidentName, presidentDept,
-      vpresidentName, vpresidentDept, pledges,
+    this.electionInstance.addCandidate(electionId, presidentName, vpresidentName,
       { from: this.state.account }).then((result) =>
       this.setState({ adding: false })  // 후보자 트랜잭션 승인 완료
     )
@@ -170,6 +170,31 @@ class App extends React.Component {
             />
           }
         </div>
+
+        <table class='table'>
+          <thead>
+            <tr>
+              <th>후보자 ID</th>
+              <th>소속 선거 ID</th>
+              <th>정 입후보자</th>
+              <th>부 입후보자</th>
+              <th>득표 수</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.state.candidates.map((candidate) => {
+              return(
+                <tr>
+                  <td>{candidate.candidateId}</td>
+                  <td>{candidate.electionId}</td>
+                  <td>{candidate.presidentName}</td>
+                  <td>{candidate.vpresidentName}</td>
+                  <td>{candidate.voteCount}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
 
         {/*
           개발 테스트용 코드
