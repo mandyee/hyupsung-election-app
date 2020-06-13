@@ -16,7 +16,9 @@ class App extends React.Component {
       account: '0x0',
 
       elections: [],
+      notStartedElections: [],
       startedElections: [],
+      endedElections: [],
       selectedElection: '',
 
       candidates: [],
@@ -24,8 +26,7 @@ class App extends React.Component {
 
       hasVoted: false,
       loading: true,
-      voting: false,
-      adding: false,
+      changing: false,
 
       block_ids: [],
       block_hashes: [],
@@ -121,12 +122,29 @@ class App extends React.Component {
           }
         })
 
+        // 시작 전 선거 저장
+        this.electionInstance.getElectionCount().then((electionCount) => {
+          for (var i = 0; i<Number(electionCount); i++) {
+            this.electionInstance.electionList(i).then((election) => {
+              const elections = [...this.state.notStartedElections]
+              if(String(election[2]) == '0') {
+                elections.push({
+                  electionId: Number(election[0]),
+                  electionName: String(election[1]),
+                  isStarted: String(election[2])
+                })
+              }
+              this.setState({ notStartedElections: elections })
+            })
+          }
+        })
+
         // 시작된 선거 저장
         this.electionInstance.getElectionCount().then((electionCount) => {
           for (var i = 0; i<Number(electionCount); i++) {
             this.electionInstance.electionList(i).then((election) => {
               const elections = [...this.state.startedElections]
-              if(String(election[2]) == 'true') {
+              if(String(election[2]) == '1') {
                 elections.push({
                   electionId: Number(election[0]),
                   electionName: String(election[1]),
@@ -134,6 +152,23 @@ class App extends React.Component {
                 })
               }
               this.setState({ startedElections: elections })
+            })
+          }
+        })
+
+        // 끝난 선거 저장
+        this.electionInstance.getElectionCount().then((electionCount) => {
+          for (var i = 0; i<Number(electionCount); i++) {
+            this.electionInstance.electionList(i).then((election) => {
+              const elections = [...this.state.endedElections]
+              if(String(election[2]) == '2') {
+                elections.push({
+                  electionId: Number(election[0]),
+                  electionName: String(election[1]),
+                  isStarted: String(election[2])
+                })
+              }
+              this.setState({ endedElections: elections })
             })
           }
         })
@@ -172,12 +207,19 @@ class App extends React.Component {
       fromBlock: 0,
       toBlock: 'latest'
     }).watch((error, event) => {
-      this.setState({ voting: false })
+      this.setState({ changing: false })
+    })
+  }
+
+  checkVoted(studentId, electionId) {
+    this.electionInstance.checkVoted(studentId, electionId).then((result) => {
+      if(result) this.setState({ hasVoted: true })
+      else this.setState({ hasVoted: false })
     })
   }
 
   castVote(studentId, candidateId) {
-    this.setState({ voting: true })
+    this.setState({ changing: true })
     this.electionInstance.vote(studentId, candidateId, { from: this.state.account })
     .then((result) =>
       this.setState({ hasVoted: true })
@@ -205,7 +247,15 @@ class App extends React.Component {
               pledges: String(candidate[8])
             })
           }
+
+          // 유권자가 선택한 선거에 대해 참여한 적이 있는지 확인
+          this.checkVoted(window.localStorage.getItem('studentId'),
+          this.state.selectedElection)
+
           this.setState({ selectedCandidates: candidates })
+
+          // 자동으로 페이지 맨 위로 scroll up
+          window.scrollTo({top: 0, behavior: 'smooth'})
         })
       }
     })
@@ -215,11 +265,48 @@ class App extends React.Component {
     })
   }
 
-  addCandidate = (electionId, presidentName, vpresidentName) => {
-    this.setState({ adding: true }) // 후보자 트랜잭션 승인 중... (Loading)
-    this.electionInstance.addCandidate(electionId, presidentName, vpresidentName,
+  deselect = e => {
+    this.setState({
+      hasVoted: false,
+      selectedElection: '',
+      selectedCandidates: []
+    })
+  }
+
+  startElection = (electionId) => {
+    this.setState({ changing: true }) // 트랜잭션 승인 중...
+    this.electionInstance.startElection(electionId,
+      { from: this.state.account }).then((result) => {
+        window.location.reload(false);  // 페이지 새로고침
+      }
+    )
+  }
+
+  endElection = (electionId) => {
+    this.setState({ changing: true }) // 트랜잭션 승인 중...
+    this.electionInstance.endElection(electionId,
+      { from: this.state.account }).then((result) => {
+        window.location.reload(false);  // 페이지 새로고침
+      }
+    )
+  }
+
+  addElection = (electionName) => {
+    this.setState({ changing: true }) // 트랜잭션 승인 중...
+    this.electionInstance.addElection(electionName,
+      { from: this.state.account }).then((result) => {
+        window.location.reload(false);  // 페이지 새로고침
+      }
+    )
+  }
+
+  addCandidate = (electionId, presidentName, presidentDept,
+    vpresidentName, vpresidentDept, pledges) => {
+    this.setState({ changing: true }) // 트랜잭션 승인 중... (Loading)
+    this.electionInstance.addCandidate(electionId, presidentName, presidentDept,
+      vpresidentName, vpresidentDept, pledges,
       { from: this.state.account }).then((result) =>
-      this.setState({ adding: false })  // 후보자 트랜잭션 승인 완료
+      this.setState({ changing: false })  // 트랜잭션 승인 완료
     )
   }
 
@@ -227,23 +314,31 @@ class App extends React.Component {
     return (
       <div>
         <div>
-          { this.state.loading || this.state.voting ?
+          { this.state.loading || this.state.changing ?
             <p class='text-center'>Loading...</p>
             :
             <Routes
               account={this.state.account}
 
+              notStartedElections={this.state.notStartedElections}
               startedElections={this.state.startedElections}
+              endedElections={this.state.endedElections}
+
+              startElection={this.startElection}
+              endElection={this.endElection}
+
               selectElection={this.selectElection}
               selectedElection={this.state.selectedElection}
               selectedCandidates={this.state.selectedCandidates}
+              deselect={this.deselect}
 
               candidates={this.state.candidates}
               hasVoted={this.state.hasVoted}
               castVote={this.castVote}
 
+              addElection={this.addElection}
               addCandidate={this.addCandidate}
-              adding={this.state.adding}
+              changing={this.state.changing}
 
               block_ids={this.state.block_ids}
               block_hashes={this.state.block_hashes}

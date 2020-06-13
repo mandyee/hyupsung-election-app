@@ -20,18 +20,18 @@ class ShowBlockInfo extends React.Component {
             데이터를 추가할 때마다 새로운 블록이 이전 블록에 연결되어 <strong>데이터가 안전하게 보관</strong>됩니다.
           </p>
         </div>
-        Current Block: {this.props.curr_block}
+        Current Block: {this.props.curr_block} <hr/>
         <div>
-        <table>
-          <thead><tr>
-            <th>Block No</th>
-            <th>Hash</th>
-            <th>Timestamp</th>
-          </tr></thead>
-          <tbody>
-            {tableRows}
-          </tbody>
-        </table>
+          <table>
+            <thead><tr>
+              <th width='100px'>Block No</th>
+              <th width='650px'>Hash</th>
+              <th>Timestamp</th>
+            </tr></thead>
+            <tbody>
+              {tableRows}
+            </tbody>
+          </table>
         </div>
         <hr/>
       </div>

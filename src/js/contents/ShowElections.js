@@ -11,9 +11,8 @@ class ShowElections extends React.Component {
         <tr>
           <td className="tdCenter">{this.props.startedElections[index].electionId}</td>
           <td>{this.props.startedElections[index].electionName}</td>
-          <td>{this.props.startedElections[index].isStarted}</td>
           <td>
-            <button type='button' class='btn btn-secondary'
+            <button type='button' class='btn btn-dark'
             onClick={this.props.selectElection}
             electionId={this.props.startedElections[index].electionId}>
               선거 열어보기
@@ -28,6 +27,7 @@ class ShowElections extends React.Component {
         <ShowCandidates
           selectedElection={this.props.selectedElection}
           selectedCandidates={this.props.selectedCandidates}
+          hasVoted={this.props.hasVoted}
           castVote={this.props.castVote}
         /> <hr/><br/>
 
@@ -37,7 +37,6 @@ class ShowElections extends React.Component {
             <tr>
               <th>election ID</th>
               <th>선거 이름</th>
-              <th>선거 시작 여부</th>
               <th>선거 열어보기</th>
             </tr>
           </thead>

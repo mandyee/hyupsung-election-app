@@ -1,9 +1,7 @@
 import React from 'react'
 import Modal from 'react-awesome-modal'
 
-import VoteForm from './VoteForm'
-
-class ShowCandidates extends React.Component {
+class ShowCandidatesAdmin extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -34,19 +32,14 @@ class ShowCandidates extends React.Component {
   }
 
   render() {
-    var voteForm;
+    var checkSelected;
     if(String(this.props.selectedElection) != '') {
-      voteForm = (
+      checkSelected = (
         <div>
-        <hr/>
-          <VoteForm
-            selectedCandidates={this.props.selectedCandidates}
-            castVote={this.props.castVote}
-          />
         </div>
       )
     } else {
-      voteForm = (
+      checkSelected = (
         <div>
           선거를 선택하세요.
         </div>
@@ -55,7 +48,7 @@ class ShowCandidates extends React.Component {
 
     return (
       <div>
-        <h1 class="my-4"> 투표하기 <small>Vote</small> </h1>
+        <h1 class="my-4"> 후보자 정보 <small>Candidates Info</small> </h1>
         <div id="candidatesRow" class="row">
           {this.props.selectedCandidates.map((candidate) => {
             return(
@@ -111,17 +104,11 @@ class ShowCandidates extends React.Component {
           })}
         </div>
 
-        { !this.props.hasVoted ?
-          // 투표를 하지 않은 유권자일 때
-          voteForm
-          :
-          // 이미 투표한 유권자일 때
-          <div> <hr/> 이미 투표하셨습니다. </div>
-        }
+        { checkSelected }
 
       </div>
     )
   }
 }
 
-export default ShowCandidates
+export default ShowCandidatesAdmin

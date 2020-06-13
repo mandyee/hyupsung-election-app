@@ -3,7 +3,10 @@ import Modal from 'react-awesome-modal'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import AdminList from '../json/AdminList'
+import ShowElectionList from './contents/ShowElectionList'
+import AddElection from './contents/AddElection'
 import AddCandidate from './contents/AddCandidate'
+import NavVoter from './contents/NavVoter'
 
 class Admin extends React.Component {
   constructor(props) {
@@ -13,6 +16,7 @@ class Admin extends React.Component {
       password: '',
       isLogin: null,
       addCandidateOn: false,
+      addElectionOn: false,
     }
   }
 
@@ -50,6 +54,22 @@ class Admin extends React.Component {
 
     window.localStorage.removeItem('isLogin')
     this.setState({ username: '', password: '', isLogin: null })
+  }
+
+  openAddElection = e => { // 선거 추가 버튼 클릭 이벤트
+    e.preventDefault()
+
+    this.setState({
+      addElectionOn: true,
+    })
+  }
+
+  closeAddElection = e => { // 선거 추가 창 닫기 클릭 이벤트
+    e.preventDefault()
+
+    this.setState({
+      addElectionOn: false,
+    })
   }
 
   openAddCandidate = e => { // 후보자 추가 버튼 클릭 이벤트
@@ -117,6 +137,7 @@ class Admin extends React.Component {
                           </button>
                         </div>
                       </form>
+                      <hr/> <NavVoter />
                     </div>
                   </div>
                 </div>
@@ -136,8 +157,19 @@ class Admin extends React.Component {
               <div class="row">
 
                 <div class="col-md-8">
-                  <h1 class="my-4"> 선거 목록 <small>Election List</small> </h1>
-                  ***** 선거 List *****
+                  <ShowElectionList
+                    notStartedElections={this.props.notStartedElections}
+                    startedElections={this.props.startedElections}
+                    endedElections={this.props.endedElections}
+
+                    startElection={this.props.startElection}
+                    endElection={this.props.endElection}
+
+                    selectElection={this.props.selectElection}
+                    selectedElection={this.props.selectedElection}
+                    selectedCandidates={this.props.selectedCandidates}
+                    deselect={this.props.deselect}
+                  />
                 </div>
 
                 <div class="col-md-4">
@@ -155,8 +187,9 @@ class Admin extends React.Component {
                   </div>
 
                   <div class="card my-4">
-                    <button class="btn btn-dark btn-detail" type="button">
-                      선거 관리
+                    <button class="btn btn-dark btn-detail" type="button"
+                    onClick={this.openAddElection}>
+                      선거 추가
                     </button>
                   </div>
 
@@ -168,21 +201,48 @@ class Admin extends React.Component {
                   </div>
 
                   <div class="card my-4">
-                    <Link to='/blockinfo' class="btn btn-dark btn-detail">
+                    <Link to='/turnout' class="btn btn-custom">
+                      투표율 보기
+                    </Link>
+                  </div>
+
+                  <div class="card my-4">
+                    <Link to='/result' class="btn btn-custom">
+                       투표 결과 보기
+                    </Link>
+                  </div>
+
+                  <div class="card my-4">
+                    <Link to='/blockinfo' class="btn btn-custom">
                        Block Info
                     </Link>
                   </div>
 
                 </div>
 
+                {/* 선거 추가 모달*/}
+                <Modal visible={this.state.addElectionOn}
+                width="400" height="250" effect="fadeInDown"
+                onClickAway={this.closeAddElection}>
+                  <div class="container text-center" style={{padding:"20px"}}>
+                    <AddElection
+                      addElection={this.props.addElection}
+                      changing={this.props.changing}
+                    />
+                    <input value="닫기" class="btn btn-dark btn-detail"
+                    type='button' onClick={this.closeAddElection}/>
+                  </div>
+                </Modal>
+
                 {/* 후보자 추가 모달*/}
                 <Modal visible={this.state.addCandidateOn}
-                width="400" height="600" effect="fadeInDown"
+                width="400" height="660" effect="fadeInDown"
                 onClickAway={this.closeAddCandidate}>
                   <div class="container text-center" style={{padding:"20px"}}>
                     <AddCandidate
+                      notStartedElections={this.props.notStartedElections}
                       addCandidate={this.props.addCandidate}
-                      adding={this.props.adding}
+                      changing={this.props.changing}
                     />
                     <input value="닫기" class="btn btn-dark btn-detail"
                     type='button' onClick={this.closeAddCandidate}/>

@@ -22,7 +22,7 @@ contract Election {
   struct ElectionUhs {  // 생성자와 구분하기 위해 Uhs를 덧붙임
     uint electionId;
     string electionName;  // 선거 이름 (ex. 총학생회 선거)
-    bool isStarted;
+    uint isStarted; // 0 : 시작 전, 1 : 진행 중, 2 : 종료
   }
 
   struct Voter {
@@ -67,7 +67,7 @@ contract Election {
     uint index = electionList.length - 1;
     electionList[index].electionId = index;
     electionList[index].electionName = _electionName;
-    electionList[index].isStarted = false;
+    electionList[index].isStarted = 0;
   }
 
   function getElectionCount() public view returns(uint) {
@@ -112,12 +112,12 @@ contract Election {
     return false;
   }
 
-  function startVote(uint _electionId) public {  // 선거 시작
-    electionList[_electionId].isStarted = true;
+  function startElection(uint _electionId) public {  // 선거 시작
+    electionList[_electionId].isStarted = 1;
   }
 
-  function endVote(uint _electionId) public {  // 선거 종료
-    electionList[_electionId].isStarted = false;
+  function endElection(uint _electionId) public {  // 선거 종료
+    electionList[_electionId].isStarted = 2;
   }
 
   /*

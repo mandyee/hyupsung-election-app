@@ -18,8 +18,22 @@ class Routes extends React.Component {
           <Route path='/admin'
             render={ () =>
               <Admin
+                addElection={this.props.addElection}
                 addCandidate={this.props.addCandidate}
-                adding={this.props.adding}
+                changing={this.props.changing}
+
+                notStartedElections={this.props.notStartedElections}
+                startedElections={this.props.startedElections}
+                endedElections={this.props.endedElections}
+
+                startElection={this.props.startElection}
+                endElection={this.props.endElection}
+
+                selectElection={this.props.selectElection}
+                selectedElection={this.props.selectedElection}
+                selectedCandidates={this.props.selectedCandidates}
+                deselect={this.props.deselect}
+
                 block_ids={this.props.block_ids}
                 block_hashes={this.props.block_hashes}
                 block_ts={this.props.block_ts}
@@ -36,6 +50,7 @@ class Routes extends React.Component {
                 selectElection={this.props.selectElection}
                 selectedElection={this.props.selectedElection}
                 selectedCandidates={this.props.selectedCandidates}
+                deselect={this.props.deselect}
 
                 candidates={this.props.candidates}
                 hasVoted={this.props.hasVoted}
@@ -49,7 +64,10 @@ class Routes extends React.Component {
           <Route exact path='/result'
             render={ () =>
               <Result
-                candidates={this.props.candidates}
+                endedElections={this.props.endedElections}
+                selectElection={this.props.selectElection}
+                selectedElection={this.props.selectedElection}
+                selectedCandidates={this.props.selectedCandidates}
               />
             }
           />

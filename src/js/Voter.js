@@ -1,10 +1,11 @@
 import React from 'react'
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 
 import App from './App'
-import VoteForm from './contents/VoteForm'
-import ShowElections from './contents/ShowElections'
 
 import VoterList from '../json/VoterList'
+import VoteForm from './contents/VoteForm'
+import ShowElections from './contents/ShowElections'
 import NavVoter from './contents/NavVoter'
 
 class Voter extends React.Component {
@@ -53,6 +54,7 @@ class Voter extends React.Component {
     window.localStorage.removeItem('isVoter')
     window.localStorage.removeItem('studentId')
     this.setState({ studentId: '', authcode: '', isVoter: null })
+    this.props.deselect()
   }
 
   render() {
@@ -129,6 +131,7 @@ class Voter extends React.Component {
                     selectedCandidates={this.props.selectedCandidates}
 
                     candidates={this.props.candidates}
+                    hasVoted={this.props.hasVoted}
                     castVote={this.props.castVote}
                   />
                 </div>
@@ -169,6 +172,18 @@ class Voter extends React.Component {
                         </tbody>
                       </table>
                     </div>
+                  </div>
+
+                  <div class="card my-4">
+                    <Link to='/turnout' class="btn btn-custom">
+                      투표율 보기
+                    </Link>
+                  </div>
+
+                  <div class="card my-4">
+                    <Link to='/result' class="btn btn-custom">
+                       투표 결과 보기
+                    </Link>
                   </div>
 
                 </div>
