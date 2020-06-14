@@ -181,7 +181,7 @@ class Voter extends React.Component {
                   </div>
 
                   <div class="card my-4">
-                    <Link to='/result' class="btn btn-custom">
+                    <Link to='/result' class="btn btn-custom" onClick={this.props.deselect}>
                        투표 결과 보기
                     </Link>
                   </div>

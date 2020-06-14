@@ -56,7 +56,7 @@ class Admin extends React.Component {
     this.setState({ username: '', password: '', isLogin: null })
   }
 
-  openAddElection = e => { // 선거 추가 버튼 클릭 이벤트
+  openAddElection = e => { // 선거 등록 버튼 클릭 이벤트
     e.preventDefault()
 
     this.setState({
@@ -64,7 +64,7 @@ class Admin extends React.Component {
     })
   }
 
-  closeAddElection = e => { // 선거 추가 창 닫기 클릭 이벤트
+  closeAddElection = e => { // 선거 등록 창 닫기 클릭 이벤트
     e.preventDefault()
 
     this.setState({
@@ -72,7 +72,7 @@ class Admin extends React.Component {
     })
   }
 
-  openAddCandidate = e => { // 후보자 추가 버튼 클릭 이벤트
+  openAddCandidate = e => { // 후보자 등록 버튼 클릭 이벤트
     e.preventDefault()
 
     this.setState({
@@ -80,7 +80,7 @@ class Admin extends React.Component {
     })
   }
 
-  closeAddCandidate = e => { // 후보자 추가 창 닫기 클릭 이벤트
+  closeAddCandidate = e => { // 후보자 등록 창 닫기 클릭 이벤트
     e.preventDefault()
 
     this.setState({
@@ -189,14 +189,14 @@ class Admin extends React.Component {
                   <div class="card my-4">
                     <button class="btn btn-dark btn-detail" type="button"
                     onClick={this.openAddElection}>
-                      선거 추가
+                      선거 등록
                     </button>
                   </div>
 
                   <div class="card my-4">
                     <button class="btn btn-dark btn-detail" type="button"
                     onClick={this.openAddCandidate}>
-                      후보자 추가
+                      후보자 등록
                     </button>
                   </div>
 
@@ -207,7 +207,7 @@ class Admin extends React.Component {
                   </div>
 
                   <div class="card my-4">
-                    <Link to='/result' class="btn btn-custom">
+                    <Link to='/result' class="btn btn-custom" onClick={this.props.deselect}>
                        투표 결과 보기
                     </Link>
                   </div>
@@ -220,7 +220,7 @@ class Admin extends React.Component {
 
                 </div>
 
-                {/* 선거 추가 모달*/}
+                {/* 선거 등록 모달*/}
                 <Modal visible={this.state.addElectionOn}
                 width="400" height="250" effect="fadeInDown"
                 onClickAway={this.closeAddElection}>
@@ -234,7 +234,7 @@ class Admin extends React.Component {
                   </div>
                 </Modal>
 
-                {/* 후보자 추가 모달*/}
+                {/* 후보자 등록 모달*/}
                 <Modal visible={this.state.addCandidateOn}
                 width="400" height="660" effect="fadeInDown"
                 onClickAway={this.closeAddCandidate}>

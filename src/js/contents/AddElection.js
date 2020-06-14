@@ -14,7 +14,7 @@ class AddElection extends React.Component {
     })
   }
 
-  handleSubmit = e => { // 선거 추가 버튼 클릭 이벤트
+  handleSubmit = e => { // 선거 등록 버튼 클릭 이벤트
     e.preventDefault()
 
     this.props.addElection(this.state.electionName)
@@ -27,7 +27,7 @@ class AddElection extends React.Component {
   render() {
     return (
       <div >
-        <h3> 선거 추가하기 </h3>
+        <h3> 선거 등록하기 </h3>
         <hr/>
         { this.props.changing ?
           <div> Loading... </div>

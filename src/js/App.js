@@ -305,8 +305,9 @@ class App extends React.Component {
     this.setState({ changing: true }) // 트랜잭션 승인 중... (Loading)
     this.electionInstance.addCandidate(electionId, presidentName, presidentDept,
       vpresidentName, vpresidentDept, pledges,
-      { from: this.state.account }).then((result) =>
-      this.setState({ changing: false })  // 트랜잭션 승인 완료
+      { from: this.state.account }).then((result) => {
+        window.location.reload(false);  // 페이지 새로고침
+      }
     )
   }
 
