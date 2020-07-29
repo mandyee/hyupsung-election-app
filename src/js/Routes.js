@@ -7,7 +7,8 @@ import Voter from './Voter'
 import Turnout from './Turnout'
 import Result from './Result'
 import BlockInfo from './BlockInfo'
-
+import AdminManual from './AdminManual'
+import VoterManual from './VoterManual'
 
 class Routes extends React.Component {
   render() {
@@ -79,6 +80,16 @@ class Routes extends React.Component {
                 block_ts={this.props.block_ts}
                 curr_block={this.props.curr_block}
               />
+            }
+          />
+          <Route exact path='/adminmanual'
+            render={ () =>
+              <AdminManual/>
+            }
+          />
+          <Route exact path='/votermanual'
+            render={ () =>
+              <VoterManual/>
             }
           />
         </Router>

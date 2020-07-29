@@ -38,10 +38,12 @@ class Voter extends React.Component {
       && user.authcode === this.state.authcode
     )
 
-    if (user === undefined) { // 유효하지 않은 user일 때
+    if (user === undefined) { // json에 등록되지 않은 user일 때
       alert('학번 혹은 password가 올바르지 않습니다.')
     }
     else {  // 유효한 user일 때
+      window.location.reload(false);  // 페이지 새로고침
+
       window.localStorage.setItem('isVoter', true)
       window.localStorage.setItem('studentId', this.state.studentId)
       this.setState({ isVoter: true })
@@ -117,6 +119,9 @@ class Voter extends React.Component {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                 <a class="navbar-brand" style={{color:"white"}}>Hyupsung Election App</a>
+                <Link to='/votermanual' class="btn btn-dark">
+                   Manual
+                </Link>
               </div>
             </nav>
 
@@ -183,6 +188,12 @@ class Voter extends React.Component {
                   <div class="card my-4">
                     <Link to='/result' class="btn btn-custom" onClick={this.props.deselect}>
                        투표 결과 보기
+                    </Link>
+                  </div>
+
+                  <div class="card my-4">
+                    <Link to='/blockinfo' class="btn btn-custom">
+                       Block Info
                     </Link>
                   </div>
 

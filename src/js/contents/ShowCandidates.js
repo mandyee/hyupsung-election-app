@@ -56,6 +56,7 @@ class ShowCandidates extends React.Component {
     return (
       <div>
         <h1 class="my-4"> 투표하기 <small>Vote</small> </h1>
+
         <div id="candidatesRow" class="row">
           {this.props.selectedCandidates.map((candidate) => {
             return(

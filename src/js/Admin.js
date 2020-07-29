@@ -150,6 +150,9 @@ class Admin extends React.Component {
             <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
               <div class="container">
                 <a class="navbar-brand" style={{color:"white"}}>Hyupsung Election App</a>
+                <Link to='/adminmanual' class="btn btn-dark">
+                   Manual
+                </Link>
               </div>
             </nav>
 

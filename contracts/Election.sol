@@ -88,6 +88,18 @@ contract Election {
   function vote(uint _studentId, uint _candidateId) public {
     uint electionId = candidateList[_candidateId].electionId;
 
+    uint cnt = 0;
+
+    // 현재 로그인 한 유권자가 voterList에 등록이 되어있는지 확인하기 위함
+    for(uint i=0; i<voterList.length; i++) {
+      if(voterList[i].studentId == _studentId) break;
+      else cnt += 1;
+    }
+
+    if(cnt == voterList.length) { // 로그인 한 유권자가 voterList에 없으면
+      addVoter(_studentId); // 등록
+    }
+
     for(uint i=0; i<voterList.length; i++) {
       if(voterList[i].studentId == _studentId) {
         voterList[i].votedElection.push(electionId); // 투표한 선거장 기록
@@ -139,10 +151,6 @@ contract Election {
   );
 
   constructor () public {
-    // 유권자
-    addVoter(20170001);
-    addVoter(20170002);
-
     // 선거
     addElection("2019학년도 총학생회 선거");
     addElection("2019학년도 이공대학 학생회 선거");
