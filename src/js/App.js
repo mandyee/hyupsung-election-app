@@ -20,6 +20,9 @@ class App extends React.Component {
       startedElections: [],
       endedElections: [],
       selectedElection: '',
+      selectedElectionName: '',
+      selectedElectionCollege: '',
+      selectedElectionDept: '',
 
       candidates: [],
       selectedCandidates: [],
@@ -114,8 +117,7 @@ class App extends React.Component {
               const elections = [...this.state.elections]
               elections.push({
                 electionId: Number(election[0]),
-                electionName: String(election[1]),
-                isStarted: String(election[2])
+                electionName: String(election[1])
               })
               this.setState({ elections: elections })
             })
@@ -130,8 +132,7 @@ class App extends React.Component {
               if(String(election[2]) == '0') {
                 elections.push({
                   electionId: Number(election[0]),
-                  electionName: String(election[1]),
-                  isStarted: String(election[2])
+                  electionName: String(election[1])
                 })
               }
               this.setState({ notStartedElections: elections })
@@ -148,7 +149,8 @@ class App extends React.Component {
                 elections.push({
                   electionId: Number(election[0]),
                   electionName: String(election[1]),
-                  isStarted: String(election[2])
+                  collegeId: Number(election[3]),
+                  deptId: Number(election[4])
                 })
               }
               this.setState({ startedElections: elections })
@@ -164,8 +166,7 @@ class App extends React.Component {
               if(String(election[2]) == '2') {
                 elections.push({
                   electionId: Number(election[0]),
-                  electionName: String(election[1]),
-                  isStarted: String(election[2])
+                  electionName: String(election[1])
                 })
               }
               this.setState({ endedElections: elections })
@@ -263,12 +264,30 @@ class App extends React.Component {
     this.setState({
       selectedElection: e.target.getAttribute('electionId')
     })
+
+    // 선택된 선거의 이름, 선거 가능 단과대 및 학과 저장
+    this.electionInstance.getElectionCount().then((electionCount) => {
+      for (var i = 0; i < Number(electionCount); i++) {
+        this.electionInstance.electionList(i).then((election) => {
+          if(Number(election[0])==Number(this.state.selectedElection)){
+            this.setState({
+              selectedElectionName: election[1],
+              selectedElectionCollege: election[3],
+              selectedElectionDept: election[4]
+            })
+          }
+        })
+      }
+    })
   }
 
   deselect = e => {
     this.setState({
       hasVoted: false,
       selectedElection: '',
+      selectedElectionName: '',
+      selectedElectionCollege: '',
+      selectedElectionDept: '',
       selectedCandidates: []
     })
   }
@@ -291,9 +310,9 @@ class App extends React.Component {
     )
   }
 
-  addElection = (electionName) => {
+  addElection = (electionName, collegeId, deptId) => {
     this.setState({ changing: true }) // 트랜잭션 승인 중...
-    this.electionInstance.addElection(electionName,
+    this.electionInstance.addElection(electionName, collegeId, deptId,
       { from: this.state.account }).then((result) => {
         window.location.reload(false);  // 페이지 새로고침
       }
@@ -330,6 +349,9 @@ class App extends React.Component {
 
               selectElection={this.selectElection}
               selectedElection={this.state.selectedElection}
+              selectedElectionName={this.state.selectedElectionName}
+              selectedElectionCollege={this.state.selectedElectionCollege}
+              selectedElectionDept={this.state.selectedElectionDept}
               selectedCandidates={this.state.selectedCandidates}
               deselect={this.deselect}
 

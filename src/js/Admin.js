@@ -170,6 +170,9 @@ class Admin extends React.Component {
 
                     selectElection={this.props.selectElection}
                     selectedElection={this.props.selectedElection}
+                    selectedElectionName={this.props.selectedElectionName}
+                    selectedElectionCollege={this.props.selectedElectionCollege}
+                    selectedElectionDept={this.props.selectedElectionDept}
                     selectedCandidates={this.props.selectedCandidates}
                     deselect={this.props.deselect}
                   />
@@ -225,7 +228,7 @@ class Admin extends React.Component {
 
                 {/* 선거 등록 모달*/}
                 <Modal visible={this.state.addElectionOn}
-                width="400" height="250" effect="fadeInDown"
+                width="500" height="350" effect="fadeInDown"
                 onClickAway={this.closeAddElection}>
                   <div class="container text-center" style={{padding:"20px"}}>
                     <AddElection

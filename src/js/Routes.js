@@ -32,6 +32,9 @@ class Routes extends React.Component {
 
                 selectElection={this.props.selectElection}
                 selectedElection={this.props.selectedElection}
+                selectedElectionName={this.props.selectedElectionName}
+                selectedElectionCollege={this.props.selectedElectionCollege}
+                selectedElectionDept={this.props.selectedElectionDept}
                 selectedCandidates={this.props.selectedCandidates}
                 deselect={this.props.deselect}
 
@@ -50,6 +53,9 @@ class Routes extends React.Component {
                 startedElections={this.props.startedElections}
                 selectElection={this.props.selectElection}
                 selectedElection={this.props.selectedElection}
+                selectedElectionName={this.props.selectedElectionName}
+                selectedElectionCollege={this.props.selectedElectionCollege}
+                selectedElectionDept={this.props.selectedElectionDept}
                 selectedCandidates={this.props.selectedCandidates}
                 deselect={this.props.deselect}
 

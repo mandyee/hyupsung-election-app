@@ -81,6 +81,9 @@ class ShowElectionList extends React.Component {
       <div>
         <ShowCandidatesAdmin
           selectedElection={this.props.selectedElection}
+          selectedElectionName={this.props.selectedElectionName}
+          selectedElectionCollege={this.props.selectedElectionCollege}
+          selectedElectionDept={this.props.selectedElectionDept}
           selectedCandidates={this.props.selectedCandidates}
         /> <hr/><br/>
 

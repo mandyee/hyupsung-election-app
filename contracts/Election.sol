@@ -23,6 +23,9 @@ contract Election {
     uint electionId;
     string electionName;  // 선거 이름 (ex. 총학생회 선거)
     uint isStarted; // 0 : 시작 전, 1 : 진행 중, 2 : 종료
+
+    uint collegeId; // 선거 가능한 단과대
+    uint deptId;  // 선거 가능한 학과
   }
 
   struct Voter {
@@ -62,12 +65,14 @@ contract Election {
     return candidateList.length;
   }
 
-  function addElection(string memory _electionName) public {
+  function addElection(string memory _electionName, uint _collegeId, uint _deptId) public {
     electionList.length += 1;
     uint index = electionList.length - 1;
     electionList[index].electionId = index;
     electionList[index].electionName = _electionName;
     electionList[index].isStarted = 0;
+    electionList[index].collegeId = _collegeId;
+    electionList[index].deptId = _deptId;
   }
 
   function getElectionCount() public view returns(uint) {
@@ -152,13 +157,13 @@ contract Election {
 
   constructor () public {
     // 선거
-    addElection("2019학년도 총학생회 선거");
-    addElection("2019학년도 이공대학 학생회 선거");
-    addElection("2019학년도 컴퓨터공학과 학생회 선거");
-    addElection("2020학년도 총학생회 선거");
-    addElection("2020학년도 이공대학 학생회 선거");
-    addElection("2020학년도 컴퓨터공학과 학생회 선거");
-    addElection("2020학년도 예술대학 학생회 선거");
+    addElection("2019학년도 총학생회 선거", 0, 0);
+    addElection("2019학년도 이공대학 학생회 선거", 4, 0);
+    addElection("2019학년도 컴퓨터공학과 학생회 선거", 4, 14);
+    addElection("2020학년도 총학생회 선거", 0, 0);
+    addElection("2020학년도 이공대학 학생회 선거", 4, 0);
+    addElection("2020학년도 컴퓨터공학과 학생회 선거", 4, 14);
+    addElection("2020학년도 예술대학 학생회 선거", 5, 0);
 
     // 선거 시작
     startElection(3); startElection(4);

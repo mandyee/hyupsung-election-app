@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import App from './App'
 
 import VoterList from '../json/VoterList'
+import DeptList from '../json/DeptList'
+import CollegeList from '../json/CollegeList'
 import VoteForm from './contents/VoteForm'
 import ShowElections from './contents/ShowElections'
 import NavVoter from './contents/NavVoter'
@@ -44,8 +46,22 @@ class Voter extends React.Component {
     else {  // 유효한 user일 때
       window.location.reload(false);  // 페이지 새로고침
 
+      // user의 학과명 추출
+      const dept = DeptList.find(
+        (dept) => dept.deptId === user.deptId
+      )
+
+      // user의 단과대명 추출
+      const college = CollegeList.find(
+        (college) => college.collegeId === dept.collegeId
+      )
+
       window.localStorage.setItem('isVoter', true)
       window.localStorage.setItem('studentId', this.state.studentId)
+      window.localStorage.setItem('collegeId', college.collegeId)
+      window.localStorage.setItem('deptId', dept.deptId)
+      window.localStorage.setItem('collegeName', college.collegeName)
+      window.localStorage.setItem('deptName', dept.deptName)
       this.setState({ isVoter: true })
     }
   }
@@ -55,7 +71,15 @@ class Voter extends React.Component {
 
     window.localStorage.removeItem('isVoter')
     window.localStorage.removeItem('studentId')
-    this.setState({ studentId: '', authcode: '', isVoter: null })
+    window.localStorage.removeItem('collegeId')
+    window.localStorage.removeItem('deptId')
+    window.localStorage.removeItem('collegeName')
+    window.localStorage.removeItem('deptName')
+    this.setState({
+      studentId: '',
+      authcode: '',
+      isVoter: null
+    })
     this.props.deselect()
   }
 
@@ -133,6 +157,9 @@ class Voter extends React.Component {
                     startedElections={this.props.startedElections}
                     selectElection={this.props.selectElection}
                     selectedElection={this.props.selectedElection}
+                    selectedElectionName={this.props.selectedElectionName}
+                    selectedElectionCollege={this.props.selectedElectionCollege}
+                    selectedElectionDept={this.props.selectedElectionDept}
                     selectedCandidates={this.props.selectedCandidates}
 
                     candidates={this.props.candidates}
@@ -148,34 +175,13 @@ class Voter extends React.Component {
                     <div class="card-body">
                       <strong>유권자</strong>님, 안녕하세요! <br/> <hr/>
                       학번 : {window.localStorage.getItem('studentId')} <br/>
-                      학과 : OOOOOO <br/> <hr/>
+                      단과대학 : {window.localStorage.getItem('collegeName')} <br/>
+                      학과 : {window.localStorage.getItem('deptName')} <br/> <hr/>
                       <span class="input-group-btn">
                         <button class='btn btn-secondary' onClick={this.exit}>
                           투표소 퇴장하기
                         </button>
                       </span>
-                    </div>
-                  </div>
-
-                  <div class="card my-4">
-                    <h5 class="card-header">투표 여부</h5>
-                    <div class="card-body">
-                      <table>
-                        <tbody>
-                          <tr>
-                            <th width="55px"> 완료 </th>
-                            <td> 2020-2 총학생회 선거 </td>
-                          </tr>
-                          <tr>
-                            <th> 완료 </th>
-                            <td> 2020-2 OO대학 학생회 선거 </td>
-                          </tr>
-                          <tr>
-                            <th> 미완료 </th>
-                            <td> 2020-2 OOOOOO과 학생회 선거 </td>
-                          </tr>
-                        </tbody>
-                      </table>
                     </div>
                   </div>
 
