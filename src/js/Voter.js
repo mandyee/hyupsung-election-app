@@ -36,8 +36,8 @@ class Voter extends React.Component {
     e.preventDefault()
 
     const user = VoterList.find(  // 학번 및 인증코드가 유효한 값인지 검사
-      (user) => user.studentId === this.state.studentId
-      && user.authcode === this.state.authcode
+      (user) => user.studentId == this.state.studentId
+      && user.authcode == this.state.authcode
     )
 
     if (user === undefined) { // json에 등록되지 않은 user일 때

@@ -175,19 +175,19 @@ contract Election {
     addCandidate(0, "홍길동", "컴퓨터공학과", "한다연", "경영학과", "1. 공약1입니다.\n2. 공약2입니다.");
     addCandidate(0, "김철수", "경영학과", "백경문", "아동보육학과", "1. 적극적 소통\n2. 강의실 환경 개선");
     addCandidate(0, "김영희", "사회복지학과", "김주영", "컴퓨터공학과", "최고의 학교를 만들겠습니다");
-    candidateList[0].voteCount = 410;
-    candidateList[1].voteCount = 746;
-    candidateList[2].voteCount = 589;
+    candidateList[0].voteCount = 182;
+    candidateList[1].voteCount = 75;
+    candidateList[2].voteCount = 93;
 
     // 2019 이공대학 학생회 선거 후보자들
     addCandidate(1, "강준상", "생명과학과", "한서진", "컴퓨터공학과", "1. 기호1번 공약1입니다.\n2. 기호1번 공약2입니다.");
     addCandidate(1, "이수임", "보건관리학과", "황치영", "도시공학과", "1. 기호2번 공약1입니다.\n2. 기호2번 공약2입니다.");
-    candidateList[3].voteCount = 229;
-    candidateList[4].voteCount = 214;
+    candidateList[3].voteCount = 83;
+    candidateList[4].voteCount = 25;
 
     // 2019 컴퓨터공학과 학생회 선거 후보자들
     addCandidate(2, "노승혜", "컴퓨터공학과", "차민혁", "컴퓨터공학과", "1. 컴퓨터공학과 공약1입니다.\n2. 컴퓨터공학과 공약2입니다.");
-    candidateList[5].voteCount = 87;
+    candidateList[5].voteCount = 28;
 
     // 2020 총학생회 선거 후보자들
     addCandidate(3, "홍길동", "컴퓨터공학과", "한다연", "경영학과", "1. 공약1입니다.\n2. 공약2입니다.");

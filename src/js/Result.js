@@ -37,6 +37,9 @@ class Result extends React.Component {
               <h1 class="my-4"> 투표 결과 <small>Results</small> </h1>
               <ShowResult
                 selectedElection={this.props.selectedElection}
+                selectedElectionName={this.props.selectedElectionName}
+                selectedElectionCollege={this.props.selectedElectionCollege}
+                selectedElectionDept={this.props.selectedElectionDept}
                 selectedCandidates={this.props.selectedCandidates}
               />
               <br/>

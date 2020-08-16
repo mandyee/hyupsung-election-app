@@ -34,7 +34,7 @@ class App extends React.Component {
       block_ids: [],
       block_hashes: [],
       block_ts: [], // block의 timestamp
-      curr_block: 100,  // block 정보 최대 100개 보여줄 것
+      curr_block: 0,
     }
 
     if (typeof web3 != 'undefined') {
@@ -101,8 +101,6 @@ class App extends React.Component {
   }
 
   componentDidMount() {
-    this.getBlocks(this.state.curr_block);
-
     // TODO: Refactor with promise chain
     this.web3.eth.getCoinbase((err, account) => {
       this.setState({ account })
@@ -112,7 +110,8 @@ class App extends React.Component {
 
         // 모든 선거 저장
         this.electionInstance.getElectionCount().then((electionCount) => {
-          for (var i = 0; i<Number(electionCount); i++) {
+          // 내림차순 정렬 (최신 선거가 최상위에 위치)
+          for (var i = Number(electionCount)-1; i >= 0; i--) {
             this.electionInstance.electionList(i).then((election) => {
               const elections = [...this.state.elections]
               elections.push({
@@ -126,7 +125,7 @@ class App extends React.Component {
 
         // 시작 전 선거 저장
         this.electionInstance.getElectionCount().then((electionCount) => {
-          for (var i = 0; i<Number(electionCount); i++) {
+          for (var i = Number(electionCount)-1; i >= 0; i--) {
             this.electionInstance.electionList(i).then((election) => {
               const elections = [...this.state.notStartedElections]
               if(String(election[2]) == '0') {
@@ -142,7 +141,7 @@ class App extends React.Component {
 
         // 시작된 선거 저장
         this.electionInstance.getElectionCount().then((electionCount) => {
-          for (var i = 0; i<Number(electionCount); i++) {
+          for (var i = Number(electionCount)-1; i >= 0; i--) {
             this.electionInstance.electionList(i).then((election) => {
               const elections = [...this.state.startedElections]
               if(String(election[2]) == '1') {
@@ -160,7 +159,7 @@ class App extends React.Component {
 
         // 끝난 선거 저장
         this.electionInstance.getElectionCount().then((electionCount) => {
-          for (var i = 0; i<Number(electionCount); i++) {
+          for (var i = Number(electionCount)-1; i >= 0; i--) {
             this.electionInstance.electionList(i).then((election) => {
               const elections = [...this.state.endedElections]
               if(String(election[2]) == '2') {
@@ -195,14 +194,14 @@ class App extends React.Component {
           }
         })
 
-        // this.electionInstance.checkVoted(window.localStorage.getItem('studentId'), 0).then((hasVoted) => {
-          this.setState({ /*hasVoted,*/ loading: false })
-        // })
+        this.setState({ loading: false })
       })
     })
   }
 
   watchEvents() {
+    this.getBlocks(this.state.curr_block);
+
     // TODO: trigger event when vote is counted, not when component renders
     this.electionInstance.votedEvent({}, {
       fromBlock: 0,
@@ -370,12 +369,6 @@ class App extends React.Component {
             />
           }
         </div>
-
-        {/*
-          개발 테스트용 코드
-          <br/>
-          <p>Your account: {this.state.account}</p>
-        */}
       </div>
     )
   }

@@ -66,7 +66,17 @@ class Routes extends React.Component {
             }
           />
           <Route exact path='/turnout'
-            component={Turnout}
+            render={ () =>
+              <Turnout
+                endedElections={this.props.endedElections}
+                selectElection={this.props.selectElection}
+                selectedElection={this.props.selectedElection}
+                selectedElectionName={this.props.selectedElectionName}
+                selectedElectionCollege={this.props.selectedElectionCollege}
+                selectedElectionDept={this.props.selectedElectionDept}
+                selectedCandidates={this.props.selectedCandidates}
+              />
+            }
           />
           <Route exact path='/result'
             render={ () =>
@@ -74,6 +84,9 @@ class Routes extends React.Component {
                 endedElections={this.props.endedElections}
                 selectElection={this.props.selectElection}
                 selectedElection={this.props.selectedElection}
+                selectedElectionName={this.props.selectedElectionName}
+                selectedElectionCollege={this.props.selectedElectionCollege}
+                selectedElectionDept={this.props.selectedElectionDept}
                 selectedCandidates={this.props.selectedCandidates}
               />
             }
