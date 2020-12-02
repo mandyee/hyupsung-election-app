@@ -13,7 +13,7 @@
     "dev": "webpack --mode development",
     "prod": "webpack --mode production"
   },
-  "author": "Minju Kim",
+  "author": "",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.26.0",
