@@ -107,8 +107,11 @@ contract Election {
 
     for(uint i=0; i<voterList.length; i++) {
       if(voterList[i].studentId == _studentId) {
-        voterList[i].votedElection.push(electionId); // 투표한 선거장 기록
-        candidateList[_candidateId].voteCount += 1; // 후보자는 득표함
+        // 중복 투표 방지 & 진행중인 선거에만 참여 가능
+        if(!checkVoted(_studentId, electionId) && electionList[electionId].isStarted == 1) {
+          voterList[i].votedElection.push(electionId); // 투표한 선거장 기록
+          candidateList[_candidateId].voteCount += 1; // 후보자는 득표함
+        }
       }
     }
 
